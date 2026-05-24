@@ -3,6 +3,7 @@ import { AuthContext } from '../core/AuthContext';
 import { useApi } from '../process/useApi';
 import { CardEditor } from './CardEditor';
 import { CardAnalytics } from './CardAnalytics';
+import { OnboardingWizard } from './OnboardingWizard';
 
 export const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
@@ -12,6 +13,9 @@ export const Dashboard = () => {
   const [tasksList, setTasksList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // Estado para controlar el asistente de onboarding
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const fetchUserData = async () => {
     try {
@@ -19,6 +23,14 @@ export const Dashboard = () => {
       const res = await request('/user/tasks');
       if (res.success) {
         setTasksList(res.tasks);
+      }
+      
+      // Consultar analíticas para verificar si el usuario tiene una tarjeta digital creada
+      const analyticsRes = await request('/card/analytics');
+      if (analyticsRes.success) {
+        if (!analyticsRes.hasCard) {
+          setShowOnboarding(true);
+        }
       }
     } catch (err) {
       setError('Error al recuperar tus tareas. Asegúrate de iniciar el backend.');
@@ -222,6 +234,17 @@ export const Dashboard = () => {
         
         {activeTab === 'analytics' && <CardAnalytics />}
       </main>
+
+      {/* Asistente de Onboarding para nuevos usuarios */}
+      <OnboardingWizard
+        user={user}
+        isOpen={showOnboarding}
+        request={request}
+        onComplete={() => {
+          setShowOnboarding(false);
+          fetchUserData();
+        }}
+      />
     </div>
   );
 };
