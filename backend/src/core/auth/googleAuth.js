@@ -27,6 +27,16 @@ function redirectToGoogle(req, res) {
     });
   }
 
+  // Detectar dinámicamente de dónde proviene la solicitud
+  const fromUrl = req.query.from || req.headers.referer || process.env.FRONTEND_URL || 'http://localhost:3003';
+  let origin = 'http://localhost:3003';
+  try {
+    const parsed = new URL(fromUrl);
+    origin = parsed.origin;
+  } catch (e) {
+    origin = fromUrl;
+  }
+
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
   const options = {
     redirect_uri: redirectUri,
@@ -34,6 +44,7 @@ function redirectToGoogle(req, res) {
     access_type: 'offline',
     response_type: 'code',
     prompt: 'consent',
+    state: origin, // <-- Enviamos el origin como 'state'
     scope: [
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email'
@@ -48,7 +59,13 @@ function redirectToGoogle(req, res) {
 
 async function handleGoogleCallback(req, res) {
   const code = req.query.code;
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3003';
+  const state = req.query.state;
+  
+  // Usar el state como frontendUrl si viene informado, sino hacer fallback a variable de entorno o local
+  let frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3003';
+  if (state) {
+    frontendUrl = state;
+  }
   
   if (!code) {
     return res.redirect(`${frontendUrl}/login?error=no_code`);

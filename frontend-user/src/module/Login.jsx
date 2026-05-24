@@ -51,7 +51,8 @@ export const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5000/api/v1/auth/google';
+    // Pasar el origen dinámico del frontend actual (sea local o en Vercel)
+    window.location.href = `http://localhost:5000/api/v1/auth/google?from=${encodeURIComponent(window.location.origin)}`;
   };
 
   return (
