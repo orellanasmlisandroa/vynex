@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { getApiBaseUrl } from '../core/config';
 
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL = getApiBaseUrl();
 
 export const PublicCard = ({ cardIdOrSlug }) => {
   const [card, setCard] = useState(null);

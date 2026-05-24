@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { AuthContext } from '../core/AuthContext';
+import { getApiBaseUrl } from '../core/config';
 
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL = getApiBaseUrl();
 
 export const useApi = () => {
   const { token, logout } = useContext(AuthContext);

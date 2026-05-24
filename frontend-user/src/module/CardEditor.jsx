@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { AuthContext } from '../core/AuthContext';
 import { useApi } from '../process/useApi';
+import { getApiBaseUrl } from '../core/config';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // COMPONENTE: CameraModal (Cámara WebRTC Premium con recorte circular 1:1)
@@ -330,7 +331,7 @@ export const CardEditor = () => {
   };
 
   // Generar URL pública
-  const publicCardUrl = `http://localhost:5000/api/v1/card/public/${slug}`;
+  const publicCardUrl = `${getApiBaseUrl()}/card/public/${slug}`;
   const mockQRUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(publicCardUrl)}&color=06b6d4&bgcolor=0b0f19`;
 
   if (loading) {
@@ -661,7 +662,7 @@ export const CardEditor = () => {
             
             <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.75rem', overflowWrap: 'break-word' }}>
               Enlace público:<br />
-              <a href={`http://localhost:3000/card-render/${slug}`} target="_blank" rel="noreferrer" style={{ color: 'var(--secondary)' }}>{`/card-render/${slug}`}</a>
+              <a href={`${window.location.origin}/card/${slug}`} target="_blank" rel="noreferrer" style={{ color: 'var(--secondary)' }}>{`/card/${slug}`}</a>
             </p>
  
             <a href={mockQRUrl} download={`qr_${slug}.png`} target="_blank" rel="noreferrer" className="btn btn-secondary" style={{ width: '100%', fontSize: '0.8rem', padding: '0.5rem 1rem', marginTop: '1rem' }}>

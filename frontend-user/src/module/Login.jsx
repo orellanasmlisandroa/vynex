@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../core/AuthContext';
 import { useApi } from '../process/useApi';
+import { getBackendUrl } from '../core/config';
 
 export const Login = () => {
   const { login } = useContext(AuthContext);
@@ -52,7 +53,7 @@ export const Login = () => {
 
   const handleGoogleLogin = () => {
     // Pasar el origen dinámico del frontend actual (sea local o en Vercel)
-    window.location.href = `http://localhost:5000/api/v1/auth/google?from=${encodeURIComponent(window.location.origin)}`;
+    window.location.href = `${getBackendUrl()}/api/v1/auth/google?from=${encodeURIComponent(window.location.origin)}`;
   };
 
   return (

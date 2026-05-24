@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useApi } from '../process/useApi';
+import { getApiBaseUrl } from '../core/config';
 
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL = getApiBaseUrl();
 
 export const CardAnalytics = () => {
   const { request } = useApi();
