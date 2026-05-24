@@ -1,0 +1,43 @@
+{
+  "project": "VYNEX",
+  "version": "1.0.0",
+  "architecture": "CPM",
+  "database": {
+    "type": "postgresql",
+    "host": "localhost",
+    "port": 5432,
+    "name": "vynex_db",
+    "fallbackInMemory": true
+  },
+  "api": {
+    "port": 5000,
+    "wsPort": 5001,
+    "prefix": "/api/v1"
+  },
+  "roles": ["ADMIN", "BUSINESS", "USER"],
+  "modules": {
+    "core": ["auth", "database", "endpoints", "api-connection"],
+    "process": ["business-logic", "internal-flows", "role-control"],
+    "module": ["admin-views", "business-views", "user-views"]
+  },
+  "integrations": {
+    "stitch": {
+      "enabled": true,
+      "webhookUrl": "https://stitch.mongodb.com/api/client/v2.0/app/vynex-automation/service/tasks/incoming_webhook/dispatch"
+    },
+    "ai": {
+      "provider": "gemini",
+      "model": "gemini-3.5-flash",
+      "contextualAwareness": true
+    },
+    "github": {
+      "repository": "orellanasmlisandroa/vynex",
+      "branch": "main",
+      "cicd": "github-actions"
+    }
+  },
+  "metrics": {
+    "exportIntervalMs": 60000,
+    "exportPath": "docs/logs_metrics"
+  }
+}
