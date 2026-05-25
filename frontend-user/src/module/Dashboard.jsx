@@ -128,6 +128,20 @@ export const Dashboard = () => {
             >
               📊 Leads y Analíticas
             </button>
+            <button 
+              onClick={() => setShowOnboarding(true)} 
+              className="btn" 
+              style={{ 
+                justifyContent: 'flex-start',
+                background: 'rgba(124, 58, 237, 0.08)',
+                borderColor: 'var(--primary)',
+                color: 'var(--primary)',
+                fontSize: '0.85rem',
+                padding: '0.65rem 1rem'
+              }}
+            >
+              ✨ Asistente (Onboarding)
+            </button>
           </nav>
         </div>
 

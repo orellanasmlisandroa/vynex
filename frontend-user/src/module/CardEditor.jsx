@@ -24,8 +24,14 @@ const CameraModal = ({ isOpen, onClose, onCapture, title = "Capturar Foto" }) =>
   const startCamera = async () => {
     setError('');
     try {
+      // Usar dimensiones ideales en lugar de estrictas para maximizar la compatibilidad
+      // con cámaras frontales de celulares que no soportan resoluciones cuadradas exactas
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { width: 480, height: 480, facingMode: 'user' },
+        video: { 
+          facingMode: 'user',
+          width: { ideal: 640 },
+          height: { ideal: 480 }
+        },
         audio: false
       });
       setStream(mediaStream);
@@ -34,7 +40,7 @@ const CameraModal = ({ isOpen, onClose, onCapture, title = "Capturar Foto" }) =>
       }
     } catch (err) {
       console.error("Error accessing camera:", err);
-      setError("No se pudo acceder a la cámara. Asegúrate de otorgar los permisos en tu navegador.");
+      setError("No se pudo acceder a la cámara. Asegúrate de otorgar los permisos de cámara en tu navegador.");
     }
   };
 
@@ -373,7 +379,7 @@ export const CardEditor = () => {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '2.5rem', alignItems: 'start' }}>
+      <div className="card-editor-grid">
         
         {/* PANEL IZQUIERDO: FORMULARIO DE EDICIÓN */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -381,7 +387,7 @@ export const CardEditor = () => {
           {/* SECCIÓN 1: PERFIL */}
           <section className="glass-panel" style={{ padding: '2rem' }}>
             <h3 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.5rem' }}>👤 Información del Profesional</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+            <div className="form-grid-2">
               <div className="form-group">
                 <label className="form-label">Identificador URL (Slug)</label>
                 <input type="text" className="form-control" value={slug} onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/ /g, '-'))} required />
@@ -510,7 +516,7 @@ export const CardEditor = () => {
           {/* SECCIÓN 2: REDES Y MENSAJERÍA */}
           <section className="glass-panel" style={{ padding: '2rem' }}>
             <h3 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.5rem' }}>🌐 Redes Sociales y Canales Oficiales</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+            <div className="form-grid-2">
               <div className="form-group">
                 <label className="form-label">LinkedIn URL</label>
                 <input type="text" className="form-control" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
@@ -546,7 +552,7 @@ export const CardEditor = () => {
           {/* SECCIÓN 3: TIENDAS Y BOTONES */}
           <section className="glass-panel" style={{ padding: '2rem' }}>
             <h3 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.5rem' }}>🛒 Tiendas Online y Enlaces Personalizados</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+            <div className="form-grid-2">
               <div className="form-group">
                 <label className="form-label">Shopify Store URL</label>
                 <input type="text" className="form-control" value={shopify} onChange={(e) => setShopify(e.target.value)} />
@@ -584,7 +590,7 @@ export const CardEditor = () => {
           {/* SECCIÓN 4: BRANDING Y TEMAS */}
           <section className="glass-panel" style={{ padding: '2rem' }}>
             <h3 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.5rem' }}>🎨 Configuración de Branding y Tema</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+            <div className="form-grid-2">
               <div className="form-group">
                 <label className="form-label">Color de Fondo</label>
                 <input type="color" className="form-control" style={{ height: '42px', padding: '0.25rem' }} value={themeBgColor} onChange={(e) => setThemeBgColor(e.target.value)} />
